@@ -27,17 +27,13 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/:inputTime?", (req, res) => {
   const { inputTime } = req.params
   if (!inputTime) {
+    const now = new Date()
     return res.json({
-      "unix": new Date().getTime(),
-      "utc": new Date().toUTCString()
+      "unix": now.getTime(),
+      "utc": now.toUTCString()
     })
   }
-  let timeToShow
-  if ( isNaN(Number(inputTime)) ) {
-    timeToShow = new Date(inputTime)
-  } else {
-    timeToShow = new Date(Number(inputTime))
-  }
+  const timeToShow = isNaN(Number(inputTime)) ? new Date(inputTime) : new Date(Number(inputTime))
   if (isNaN(timeToShow)) {
     return res.json({error: "Invalid Date"})
   }
